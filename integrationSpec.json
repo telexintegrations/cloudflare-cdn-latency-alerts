@@ -1,0 +1,61 @@
+
+{
+    "data": {
+      "date": {
+        "created_at": "2025-02-20",
+        "updated_at": "2025-02-20"
+      },
+      "descriptions": {
+        "app_name": "Cloudflare CDN Latency Alerts",
+        "app_description": "Monitors CDN response times and geo-specific latency issues using the Cloudflare Analytics API.",
+        "app_logo": "https://www.vectorlogo.zone/logos/cloudflare/cloudflare-ar21~bgwhite.svg",
+        "app_url": "https://cloudflare-cdn-latency-alerts1.onrender.com/",
+        "background_color": "#F38020"
+      },
+      "author": "Jay Udoye",
+      "integration_category": "Cloud Services",
+      "integration_type": "output",
+      "is_active": true,
+      "key_features": [
+      "Uses Cloudflare Analytics API to check for CDN response time",
+      "Alerts user when latency goes above set threshold",
+      "Geo-specific alerts"
+    ],
+      "settings": [
+        {
+          "label": "Cloudflare API Token",
+          "type": "text",
+          "description": "API token for authenticating with the Cloudflare Analytics API.",
+          "required": true
+        },
+        {
+          "label": "Cloudflare Account ID",
+          "type": "text",
+          "description": "Cloudflare account ID for accessing the analytics data.",
+          "required": true
+        },
+        {
+          "label": "Telex Webhook URL",
+          "type": "text",
+          "description": "Telex webhook URL for sending latency alerts.",
+          "required": true
+        },
+        {
+          "label": "Latency Threshold (ms)",
+          "type": "number",
+          "description": "Latency threshold in milliseconds for triggering alerts.",
+          "default": 500,
+          "required": true
+        },
+        {
+          "label": "Check Interval (Cron Syntax)",
+          "type": "text",
+          "description": "Interval for checking latency data (e.g., '0 * * * *' for hourly).",
+          "default": "0 * * * *",
+          "required": true
+        }
+      ],
+      "target_url": "https://cloudflare-cdn-latency-alerts1.onrender.com/webhook"
+    }
+  }
+  
