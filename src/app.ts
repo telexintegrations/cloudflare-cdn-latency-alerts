@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import axios from 'axios';
 import cors from 'cors';
+import cron from 'node-cron';
 import fs from "fs";
 import path from "path";
 
@@ -26,7 +27,7 @@ interface LatencyIssue {
     edgeResponseTimeMs: number;
     requests: number;
   };
-}
+};
 
 async function fetchLatencyData(): Promise<LatencyIssue[]> {
   const query = `{
@@ -61,7 +62,7 @@ async function fetchLatencyData(): Promise<LatencyIssue[]> {
     console.error('Error fetching latency data:', error);
     return [];
   }
-}
+};
 
 async function sendTelexAlert(issues: LatencyIssue[]): Promise<void> {
   const message = {
@@ -79,7 +80,7 @@ async function sendTelexAlert(issues: LatencyIssue[]): Promise<void> {
   } catch (error) {
     console.error('Error sending latency alert to Telex:', error);
   }
-}
+};
 
 async function checkLatencyAndAlert(): Promise<void> {
   const data = await fetchLatencyData();
@@ -92,9 +93,15 @@ async function checkLatencyAndAlert(): Promise<void> {
   } else {
     console.log('No latency issues detected.');
   }
-}
+};
+
+cron.schedule('0 * * * *', async () => {
+  console.log('Running scheduled latency check...');
+  await checkLatencyAndAlert();
+});
+
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('This integration monitors CDN latency and Alerts!');
 });
 
 app.get("/integration.json", (req, res) => {
