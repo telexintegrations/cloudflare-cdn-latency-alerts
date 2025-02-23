@@ -2,7 +2,7 @@
 
 ## 📚 **Overview**
 
-The **Cloudflare CDN Latency Alerts** integration is an **output integration** designed for the **Telex** platform. It continuously **monitors Cloudflare CDN response times** and identifies **geo-specific latency issues** using the **Cloudflare Analytics API**. The integration helps teams to detect performance degradations at specific Cloudflare data centers (colocations) and receive timely alerts.
+The **Cloudflare CDN Latency Alerts** integration is an **output integration** designed for the **Telex** platform. It continuously **monitors Cloudflare CDN response times** and identifies **geo-specific latency issues** using the **Cloudflare Analytics API**. The integration helps teams to detect performance degradations at specific Cloudflare data centers (co locations) and receive timely alerts.
 
 ---
 
@@ -38,8 +38,8 @@ The **Cloudflare CDN Latency Alerts** integration is an **output integration** d
 
 ### 1. **Clone the Repository:**
 ```bash
-git clone https://github.com/your-org/cloudflare-cdn-latency-alert.git
-cd cloudflare-cdn-latency-alert
+git clone https://github.com/telexintegrations/cloudflare-cdn-latency-alerts.git
+cd cloudflare-cdn-latency-alerts
 ```
 
 ### 2. **Install Dependencies:**
@@ -85,9 +85,10 @@ Configure your **Telex** integration settings by adding the following in your `i
   "category": "cloud services",
   "description": "Monitors Cloudflare CDN response times and geo-specific latency issues using the Cloudflare Analytics API.",
   "settings": {
-    "apiToken": "{{CLOUDFLARE_API_TOKEN}}",
-    "accountId": "{{CLOUDFLARE_ACCOUNT_ID}}",
-    "latencyThresholdMs": 500
+    "Cloudflare API Token": "{{CLOUDFLARE_API_TOKEN}}",
+    "Cloudflare Account ID": "{{CLOUDFLARE_ACCOUNT_ID}}",
+    "Telex Webhook URL": "{{TELEX_WEBHOOK_URL}}",
+    "Latency Threshold (ms)": "{{LATENCY_THRESHOLD}}"
   }
 }
 ```
@@ -103,7 +104,7 @@ This integration uses **node-cron** for periodic checks:
 import cron from 'node-cron';
 cron.schedule('0 * * * *', () => {
   console.log('🔄 Running hourly latency check...');
-  fetchAndProcessLatencyData();
+  checkLatencyAndAlert();
 });
 ```
 - The `0 * * * *` cron expression runs **hourly** at minute zero.
@@ -152,18 +153,6 @@ When latency exceeds the defined threshold, the integration sends alerts via con
 }
 ```
 
-### **Telex Integration Example:**
-```typescript
-import fetch from 'node-fetch';
-
-async function sendTelexAlert(message: string) {
-  await fetch(process.env.TELEX_WEBHOOK_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text: message })
-  });
-}
-```
 
 ---
 
@@ -179,7 +168,7 @@ npm run test
 ```
 cloudflare-cdn-latency-alerts/
 ├── src/
-│   ├── app.ts
+│   └── app.ts
 ├── .gitignore
 ├── LICENSE
 ├── README.md
