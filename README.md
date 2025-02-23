@@ -50,8 +50,9 @@ npm install
 ### 3. **Environment Configuration:**
 Create a `.env` file in the root directory:
 ```dotenv
-CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
 CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
+CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
+TELEX_WEBHOOK_URL=your_telex_webhook_url
 LATENCY_THRESHOLD=500  # Set latency threshold in ms
 ```
 
