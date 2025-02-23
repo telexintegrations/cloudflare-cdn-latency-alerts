@@ -46,13 +46,6 @@
           "description": "Latency threshold in milliseconds for triggering alerts.",
           "default": 500,
           "required": true
-        },
-        {
-          "label": "Check Interval (Cron Syntax)",
-          "type": "text",
-          "description": "Interval for checking latency data (e.g., '0 * * * *' for hourly).",
-          "default": "0 * * * *",
-          "required": true
         }
       ],
       "target_url": "https://cloudflare-cdn-latency-alerts1.onrender.com/webhook"
