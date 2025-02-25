@@ -3,11 +3,11 @@
     "data": {
       "date": {
         "created_at": "2025-02-20",
-        "updated_at": "2025-02-20"
+        "updated_at": "2025-02-24"
       },
       "descriptions": {
         "app_name": "Cloudflare CDN Latency Alerts",
-        "app_description": "Monitors CDN response times and geo-specific latency issues using the Cloudflare Analytics API.",
+        "app_description": "Monitors CDN response times and geo-specific latency issues using the Cloudflare GraphQL Analytics API.",
         "app_logo": "https://www.vectorlogo.zone/logos/cloudflare/cloudflare-ar21~bgwhite.svg",
         "app_url": "https://cloudflare-cdn-latency-alerts1.onrender.com/",
         "background_color": "#F38020"
@@ -17,21 +17,21 @@
       "integration_type": "output",
       "is_active": true,
       "key_features": [
-      "Uses Cloudflare Analytics API to check for CDN response time",
-      "Alerts user when latency goes above set threshold",
+      "Uses Cloudflare GraphQL Analytics API to check for CDN response time",
+      "Helps user to keep Latency in Check",
       "Geo-specific alerts"
     ],
       "settings": [
         {
-          "label": "Cloudflare API Token",
+          "label": "Cloudflare API Key",
           "type": "text",
-          "description": "API token for authenticating with the Cloudflare Analytics API.",
+          "description": "API token Key for authenticating with the Cloudflare GraphQL Analytics API.",
           "required": true
         },
         {
-          "label": "Cloudflare Account ID",
+          "label": "Cloudflare Zone ID",
           "type": "text",
-          "description": "Cloudflare account ID for accessing the analytics data.",
+          "description": "Cloudflare Zone ID for accessing the analytics data.",
           "required": true
         },
         {
@@ -39,16 +39,10 @@
           "type": "text",
           "description": "Telex webhook URL for sending latency alerts.",
           "required": true
-        },
-        {
-          "label": "Latency Threshold (ms)",
-          "type": "number",
-          "description": "Latency threshold in milliseconds for triggering alerts.",
-          "default": 500,
-          "required": true
         }
       ],
-      "target_url": "https://cloudflare-cdn-latency-alerts1.onrender.com/webhook"
+      "tick_url": "https://ping.telex.im/v1/webhooks/01952478-7dad-7fa3-9d4c-7c581ca43a12",
+      "target_url": "https://cloudflare-cdn-latency-alerts1.onrender.com"
     }
   }
   

@@ -2,14 +2,13 @@
 
 ## 📚 **Overview**
 
-The **Cloudflare CDN Latency Alerts** integration is an **output integration** designed for the **Telex** platform. It continuously **monitors Cloudflare CDN response times** and identifies **geo-specific latency issues** using the **Cloudflare Analytics API**. The integration helps teams to detect performance degradations at specific Cloudflare data centers (co locations) and receive timely alerts.
+The **Cloudflare CDN Latency Alerts** integration is an **output integration** designed for the **Telex** platform. It continuously **monitors Cloudflare CDN response times** and identifies **geo-specific latency issues** using the **Cloudflare GraphQL Analytics API**. The integration helps teams to detect performance degradations at specific Cloudflare data centers (co locations) and receive timely alerts.
 
 ---
 
 ## 🚀 **Key Features**
 
 - 🌐 **Geo-Specific Latency Monitoring**: Tracks latency by city (`coloCity`) for Cloudflare points of presence (PoPs).
-- ⏱ **Latency Threshold Alerts**: Sends alerts when edge response times exceed configurable thresholds.
 - 📊 **Daily Aggregated Metrics**: Fetches daily metrics for HTTP requests and response times.
 - 💬 **Flexible Output Channels**: Supports easy integration with platforms like **Slack**, **email**, or custom webhooks.
 - 🔒 **Secure Authentication**: Uses **Cloudflare API Tokens** for secure access to analytics data.
@@ -29,7 +28,7 @@ The **Cloudflare CDN Latency Alerts** integration is an **output integration** d
 
 1. **Node.js** (v16+ recommended) and **npm** installed.
 2. **Cloudflare API Token** with permissions to access analytics data.
-3. A valid **Cloudflare Account ID**.
+3. A valid **Cloudflare Zone ID**.
 4. **Telex** account for integration deployment.
 
 ---
@@ -50,10 +49,9 @@ npm install
 ### 3. **Environment Configuration:**
 Create a `.env` file in the root directory:
 ```dotenv
-CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
-CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
+CLOUDFLARE_API_KEY=your_cloudflare_api_token_key
+CLOUDFLARE_ZONE_ID=your_cloudflare_zone_id
 TELEX_WEBHOOK_URL=your_telex_webhook_url
-LATENCY_THRESHOLD=500  # Set latency threshold in ms
 ```
 
 ---
@@ -89,7 +87,6 @@ Configure your **Telex** integration settings by adding the following in your `i
     "Cloudflare API Token": "{{CLOUDFLARE_API_TOKEN}}",
     "Cloudflare Account ID": "{{CLOUDFLARE_ACCOUNT_ID}}",
     "Telex Webhook URL": "{{TELEX_WEBHOOK_URL}}",
-    "Latency Threshold (ms)": "{{LATENCY_THRESHOLD}}"
   }
 }
 ```
@@ -117,42 +114,32 @@ cron.schedule('0 * * * *', () => {
 The integration sends a **GraphQL query** to fetch latency data:
 
 ```graphql
-{
-  viewer {
-    accounts(filter: {accountTag: "ACCOUNT_ID"}) {
-      httpRequests1dGroups {
-        dimensions {
-          coloCity
-        }
-        sum {
-          edgeResponseTimeMs
-          requests
+query {
+    viewer {
+      zones(filter: { zoneTag: "${CLOUDFLARE_ZONE_ID}" }) {
+        httpRequests1dGroups(limit: 1, filter: { date_geq: "2025-02-25", date_leq: "2025-02-26" }) {
+          sum {
+            countryMap {
+              clientCountryName
+              requests
+            }
+            bytes
+            cachedBytes
+            requests
+            cachedRequests
+          }
+          dimensions {
+            date
+          }
         }
       }
     }
   }
-}
+`;
 ```
 
-- **`coloCity`**: City where Cloudflare PoP is located.
-- **`edgeResponseTimeMs`**: Aggregated response time in milliseconds.
+- **`clientCountryName`**: City where Cloudflare PoP is located.
 - **`requests`**: Total number of requests processed.
-
----
-
-## 📩 **Alerting Mechanism**
-
-When latency exceeds the defined threshold, the integration sends alerts via configured output channels (e.g., Slack, email).
-
-### **Sample Alert Payload:**
-```json
-{
-  "city": "New York",
-  "edgeResponseTimeMs": 480,
-  "requests": 1500,
-  "message": "⚠️ High latency detected in New York (480ms). Threshold: 400ms."
-}
-```
 
 
 ---
